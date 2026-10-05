@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Anfragen – GaLaBau Diwold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ------------------------------------------------------------------
+   FARBEN: Hier anpassen, damit sie zur Website passen.
+   ------------------------------------------------------------------ */
+:root{
+  --top:#1D3A2A;
+  --bg:#EDEFE7;
+  --surface:#F9FAF6;
+  --text:#17251C;
+  --muted:#586658;
+  --line:#D6DBCE;
+  --accent:#4F7D3A;      /* Hauptfarbe im Diagramm (Anfragen) */
+  --won:#B27A22;         /* zweite Linie (Aufträge) */
+  --warn:#A63E2A;
+  --btn:#1D3A2A;
+  --btn-text:#FFFFFF;
+  --neu-bg:#DCEBCB;  --neu-fg:#2C581D;
+  --bes-bg:#F2E4C0;  --bes-fg:#765010;
+  --ang-bg:#D5E4EA;  --ang-fg:#2B5163;
+  --gew-bg:#1D3A2A;  --gew-fg:#F2F6EE;
+  --ver-bg:#E0E2DB;  --ver-fg:#4D554C;
+  --ueb-bg:#F5D8D0;  --ueb-fg:#8A2D1B;
+  --tip-bg:#14261B;  --tip-text:#EEF3E9;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --top:#112218;
+    --bg:#0E1711;
+    --surface:#15211A;
+    --text:#E6EDE1;
+    --muted:#9BA99C;
+    --line:#263629;
+    --accent:#86B85E;
+    --won:#D9A441;
+    --warn:#E28A76;
+    --btn:#86B85E;
+    --btn-text:#0E1711;
+    --neu-bg:#223A1B;  --neu-fg:#B7DC95;
+    --bes-bg:#3A2E12;  --bes-fg:#E8C57A;
+    --ang-bg:#17323E;  --ang-fg:#9CC7DA;
+    --gew-bg:#86B85E;  --gew-fg:#0E1711;
+    --ver-bg:#263026;  --ver-fg:#A8B2A6;
+    --ueb-bg:#43201A;  --ueb-fg:#F0A592;
+    --tip-bg:#09110C;  --tip-text:#EEF3E9;
+  }
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,.brand,.big{font-family:"Bricolage Grotesque","Public Sans",system-ui,sans-serif}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Kopfzeile */
+.top{background:var(--top);color:#F1F5EC}
+.top-inner{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.005em;color:inherit;text-decoration:none}
+.brand svg{width:22px;height:22px;flex:none}
+.top nav{display:flex;gap:6px;flex:1}
+.tab{padding:6px 12px;border-radius:999px;color:#C9D6C2;text-decoration:none;font-weight:500;display:inline-flex;gap:8px;align-items:center}
+.tab[aria-current="page"]{background:rgba(255,255,255,.14);color:#fff}
+.tab.soon{opacity:.6;cursor:default}
+.tab small{font-size:12px;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:0 7px}
+.top-right{display:flex;gap:12px;align-items:center}
+.mode{font-size:13px;padding:2px 10px;border-radius:999px;background:rgba(255,255,255,.14)}
+.ghost{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:4px 14px;cursor:pointer}
+.ghost:hover{background:rgba(255,255,255,.1)}
+
+/* Layout */
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 72px}
+.note{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--won);border-radius:10px;padding:12px 16px;margin-bottom:22px;color:var(--muted);font-size:14px}
+.note code{font-size:13px;color:var(--text)}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px}
+h1{margin:0;font-size:clamp(30px,4.5vw,42px);line-height:1.1;letter-spacing:-.015em}
+.sub{margin:6px 0 0;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;padding:6px 16px;border-radius:999px;cursor:pointer;font-weight:500;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--btn);color:var(--btn-text)}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:22px}
+.kpi{background:var(--surface);padding:18px 20px}
+.big{font-size:38px;line-height:1.05;font-weight:700;letter-spacing:-.02em}
+.kpi .lbl{margin-top:6px;font-weight:500}
+.kpi .hint{font-size:13px;color:var(--muted);margin-top:2px}
+.up{color:var(--accent);font-weight:600}
+.down,.bad{color:var(--warn);font-weight:600}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:16px}
+.panel h2{margin:0;font-size:20px;letter-spacing:-.01em}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.legend{display:flex;gap:18px;color:var(--muted);font-size:14px}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:7px;vertical-align:middle}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.two .panel{margin-top:16px}
+
+/* Diagramm */
+.chart{position:relative;min-height:250px}
+.chart svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.grid{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.axis{fill:var(--muted);font-size:12px;font-family:"Public Sans",system-ui,sans-serif}
+.line1{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.line2{fill:none;stroke:var(--won);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.cross{stroke:var(--muted);stroke-width:1;opacity:.55}
+.dot{stroke:var(--surface);stroke-width:2}
+.tip{position:absolute;pointer-events:none;background:var(--tip-bg);color:var(--tip-text);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:9px 13px;font-size:13px;min-width:150px;z-index:2}
+.tip b{display:block;margin-bottom:5px}
+.tip .r{display:flex;align-items:center;gap:8px;line-height:1.7}
+.tip .r i{width:10px;height:10px;border-radius:3px;flex:none}
+.tip .r strong{margin-left:auto;padding-left:14px}
+.line1.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s ease-out forwards}
+.area.fade{animation:fade .9s ease-out both}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{from{opacity:0}}
+
+/* Balken */
+.bar{display:grid;grid-template-columns:minmax(110px,40%) 1fr 32px;gap:12px;align-items:center;padding:7px 0}
+.bl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bt{height:10px;background:var(--bg);border-radius:999px;overflow:hidden}
+.bf{display:block;height:100%;background:var(--accent);border-radius:999px;min-width:6px}
+.bn{text-align:right;font-weight:600}
+.empty{color:var(--muted);margin:8px 0}
+
+/* Liste */
+.list-head{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line);background:none;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:14px}
+.chips button[aria-pressed="true"]{background:var(--btn);color:var(--btn-text);border-color:var(--btn)}
+.item{border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr 70px 110px 150px 18px;gap:12px;align-items:center;padding:13px 2px}
+.item summary::-webkit-details-marker{display:none}
+.item summary:hover .nm{text-decoration:underline}
+.nm{font-weight:600}
+.svc{color:var(--muted);font-size:14px}
+.plz,.when{color:var(--muted);font-size:14px}
+.chev{width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s}
+.item[open] .chev{transform:rotate(225deg)}
+.badge{justify-self:start;font-size:13px;font-weight:600;padding:2px 11px;border-radius:999px;white-space:nowrap}
+.b-neu{background:var(--neu-bg);color:var(--neu-fg)}
+.b-besichtigung{background:var(--bes-bg);color:var(--bes-fg)}
+.b-angebot{background:var(--ang-bg);color:var(--ang-fg)}
+.b-gewonnen{background:var(--gew-bg);color:var(--gew-fg)}
+.b-verloren{background:var(--ver-bg);color:var(--ver-fg)}
+.b-ueberfaellig{background:var(--ueb-bg);color:var(--ueb-fg)}
+.detail{padding:2px 2px 18px;display:grid;gap:12px}
+.detail dl{display:grid;grid-template-columns:110px 1fr;gap:6px 14px;margin:0}
+.detail dt{color:var(--muted)}
+.detail dd{margin:0;overflow-wrap:anywhere}
+.detail a{color:var(--accent);font-weight:500}
+.msg{white-space:pre-wrap}
+.status-row{display:flex;align-items:center;gap:10px}
+select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.more{margin-top:12px;border:1px solid var(--line);background:none;border-radius:999px;padding:6px 18px;cursor:pointer;font-weight:500}
+.more:hover{background:var(--bg)}
+
+/* Login */
+.login{position:fixed;inset:0;background:var(--top);display:grid;place-items:center;padding:20px;z-index:10}
+.login form{background:var(--surface);border-radius:14px;padding:28px;width:100%;max-width:380px;display:grid;gap:14px}
+.login h2{margin:0;font-size:24px}
+.login label{display:grid;gap:5px;font-weight:500}
+.login input{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px}
+.login button{background:var(--btn);color:var(--btn-text);border:0;border-radius:999px;padding:11px;font-weight:600;cursor:pointer}
+.login .err{color:var(--warn);margin:0;min-height:1.4em}
+
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--tip-bg);color:var(--tip-text);padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+#toast.on{opacity:1}
+
+@media (max-width:860px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .item summary{grid-template-columns:1fr auto;gap:2px 12px}
+  .plz,.chev{display:none}
+  .when{grid-column:1;grid-row:2}
+  .badge{grid-column:2;grid-row:1 / span 2;align-self:center}
+  .detail dl{grid-template-columns:90px 1fr}
+  .big{font-size:32px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .line1.draw{stroke-dasharray:none;stroke-dashoffset:0}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="#">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15" fill="#8CB257"/><path d="M5 19c3-5 6-8 11-11" stroke="#1D3A2A" stroke-width="1.6" stroke-linecap="round"/></svg>
+      GaLaBau Diwold
+    </a>
+    <nav aria-label="Bereiche">
+      <a class="tab" href="#" aria-current="page">Anfragen</a>
+      <span class="tab soon" aria-disabled="true">Referenzen <small>folgt</small></span>
+    </nav>
+    <div class="top-right">
+      <span id="mode" class="mode"></span>
+      <button id="logout" class="ghost" hidden>Abmelden</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="demo-note" class="note" hidden>
+    Das sind Beispieldaten. Trage im Skript unten <code>SUPABASE_URL</code> und <code>SUPABASE_ANON_KEY</code> ein, dann erscheinen hier die echten Anfragen aus dem Kontaktformular.
+  </div>
+  <div id="load-error" class="note" hidden></div>
+
+  <div class="head">
+    <div>
+      <h1>Anfragen</h1>
+      <p class="sub" id="sub">Lade Daten …</p>
+    </div>
+    <div class="seg" role="group" aria-label="Zeitraum">
+      <button data-range="7" aria-pressed="false">7 Tage</button>
+      <button data-range="30" aria-pressed="true">30 Tage</button>
+      <button data-range="90" aria-pressed="false">90 Tage</button>
+    </div>
+  </div>
+
+  <section class="kpis" id="kpis" aria-label="Kennzahlen"></section>
+
+  <section class="panel" aria-labelledby="chart-title">
+    <div class="panel-head">
+      <h2 id="chart-title">Anfragen im Zeitverlauf</h2>
+      <div class="legend">
+        <span><i style="background:var(--accent)"></i>Anfragen</span>
+        <span><i style="background:var(--won)"></i>Daraus Aufträge</span>
+      </div>
+    </div>
+    <div class="chart" id="chart"></div>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Gefragte Leistungen</h2>
+      <div id="bars-leistung"></div>
+    </section>
+    <section class="panel">
+      <h2>Woher die Anfragen kommen</h2>
+      <div id="bars-quelle"></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="list-head">
+      <h2>Alle Anfragen</h2>
+      <div class="chips" id="chips" role="group" aria-label="Nach Status filtern"></div>
+    </div>
+    <div id="list"></div>
+    <button class="more" id="more" hidden>Mehr anzeigen</button>
+  </section>
+</main>
+
+<div class="login" id="login" hidden>
+  <form id="login-form">
+    <h2>Anmelden</h2>
+    <label>E-Mail-Adresse<input type="email" id="l-mail" autocomplete="username" required></label>
+    <label>Passwort<input type="password" id="l-pass" autocomplete="current-password" required></label>
+    <p class="err" id="l-err" role="alert"></p>
+    <button type="submit">Anmelden</button>
+  </form>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px">Für das Dashboard wird JavaScript benötigt.</p></noscript>
+
+<script>
+/* ==================================================================
+   EINSTELLUNGEN
+   Leer lassen = Demodaten. Eintragen = echte Anfragen aus Supabase.
+   Den "anon"-Key darfst du hier eintragen (er ist für den Browser gedacht,
+   der Schutz kommt von Login + Row Level Security).
+   NIEMALS den "service_role"-Key oder den Resend-Key in diese Datei!
+   ================================================================== */
+const CONFIG = {
+  SUPABASE_URL: '',        // z. B. https://abcdefgh.supabase.co
+  SUPABASE_ANON_KEY: '',   // Project Settings → API → anon public
+  TABLE: 'anfragen'
+};
+
+/* ------------------------------------------------------------------ */
+const STATUS = ['neu','besichtigung','angebot','gewonnen','verloren'];
+const STATUS_LABEL = {neu:'Neu', besichtigung:'Besichtigung', angebot:'Angebot raus', gewonnen:'Gewonnen', verloren:'Verloren'};
+const WD = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const dm = d => `${pad(d.getDate())}.${pad(d.getMonth()+1)}.`;
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const startOfDay = d => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
+const startOfWeek = d => addDays(startOfDay(d), -((d.getDay()+6)%7));
+function isoWeek(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(),0,1));
+  return Math.ceil(((t - y0)/86400000 + 1)/7);
+}
+function ago(d){
+  const m = Math.round((Date.now()-d)/60000);
+  if (m < 1) return 'gerade eben';
+  if (m < 60) return `vor ${m} Min.`;
+  const h = Math.round(m/60);
+  if (h < 24) return `vor ${h} Std.`;
+  const dd = Math.round(h/24);
+  if (dd === 1) return 'gestern';
+  if (dd < 7) return `vor ${dd} Tagen`;
+  return `${dm(d)}${d.getFullYear()}`;
+}
+
+const state = { rows: [], range: 30, filter: 'alle', limit: 15, live: false, client: null, open: new Set() };
+
+/* ---------- Daten normalisieren ---------- */
+function normalize(r){
+  let l = r.leistungen;
+  if (typeof l === 'string') l = l.replace(/[{}"]/g,'').split(',');
+  if (!Array.isArray(l)) l = [];
+  return {
+    id: r.id,
+    created: new Date(r.created_at),
+    name: r.name || 'Ohne Namen',
+    email: r.email || '',
+    telefon: r.telefon || '',
+    plz: r.plz || '',
+    leistungen: l.map(x => String(x).trim()).filter(Boolean),
+    quelle: r.quelle || '',
+    nachricht: r.nachricht || '',
+    status: STATUS.includes(r.status) ? r.status : 'neu'
+  };
+}
+
+/* ---------- Demodaten ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function makeDemo(){
+  const r = mulberry32(20261005);
+  const pick = a => a[Math.floor(r()*a.length)];
+  const weighted = (pairs) => { const tot = pairs.reduce((s,p)=>s+p[1],0); let x = r()*tot; for (const [v,w] of pairs){ if ((x-=w) < 0) return v; } return pairs[0][0]; };
+  const FIRST = ['Anna','Markus','Sabine','Thomas','Julia','Stefan','Petra','Michael','Katrin','Daniel','Monika','Frank','Nicole','Jürgen','Claudia','Andreas','Heike','Tobias','Birgit','Uwe'];
+  const LAST = ['Becker','Hoffmann','Schäfer','Koch','Bauer','Richter','Klein','Wolf','Neumann','Schwarz','Zimmermann','Braun','Krüger','Hartmann','Lange','Schmitt','Werner','Krause','Meier','Lehmann'];
+  const PLZ = ['67346','67346','67346','67354','67354','67360','67141','67065','67433','67098','67227','76829','68161','69115'];
+  const SVC = [['Pflasterarbeiten',30],['Terrassenbau',28],['Rollrasen',16],['Erdarbeiten',10],['Hecke & Pflege',16]];
+  const SRC = [['Google Suche',35],['Empfehlung / Bekannte',25],['GaLaBau Website',15],['Social Media (Instagram, etc.)',12],['Flyer / Werbung',8],['Sonstiges',5]];
+  const MSG = {
+    'Pflasterarbeiten':'Wir möchten unsere Einfahrt neu pflastern lassen, etwa 45 m². Wann wäre eine Besichtigung möglich?',
+    'Terrassenbau':'Neue Terrasse hinter dem Haus, gern Naturstein. Können Sie uns einen Termin zur Beratung anbieten?',
+    'Rollrasen':'Der alte Rasen ist hinüber. Wir hätten gern Rollrasen auf ca. 120 m².',
+    'Erdarbeiten':'Der Garten muss vor dem Anlegen eines Beetes abgetragen und planiert werden.',
+    'Hecke & Pflege':'Die Thujenhecke ist zu hoch geworden. Wir suchen jemanden für Schnitt und Entsorgung.'
+  };
+  const poisson = l => { const L = Math.exp(-l); let k = 0, p = 1; do { k++; p *= r(); } while (p > L); return k-1; };
+  const status = age => {
+    const x = r();
+    if (age < 1) return x < .8 ? 'neu' : 'besichtigung';
+    if (age < 4) return x < .2 ? 'neu' : x < .55 ? 'besichtigung' : x < .9 ? 'angebot' : 'verloren';
+    if (age < 14) return x < .05 ? 'neu' : x < .2 ? 'besichtigung' : x < .5 ? 'angebot' : x < .8 ? 'gewonnen' : 'verloren';
+    return x < .02 ? 'neu' : x < .05 ? 'besichtigung' : x < .1 ? 'angebot' : x < .4 ? 'gewonnen' : 'verloren';
+  };
+  const asc = s => s.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss');
+  const now = new Date(), today = startOfDay(now), rows = [];
+  let n = 0;
+  for (let back = 119; back >= 0; back--){
+    const day = addDays(today, -back);
+    const wd = day.getDay();
+    let lambda = (wd === 6 ? 1.5 : wd === 0 ? 1.0 : 1.1) * (1 + (119-back)/400);
+    if (back === 13 || back === 12) lambda *= 2.6;
+    const count = poisson(lambda);
+    for (let i = 0; i < count; i++){
+      let ts = new Date(day); ts.setHours(7 + Math.floor(r()*14), Math.floor(r()*60));
+      if (ts > now) ts = new Date(now - r()*3*3600e3);
+      const f = pick(FIRST), l = pick(LAST);
+      const svcs = [weighted(SVC)];
+      if (r() < .22){ const s2 = weighted(SVC); if (!svcs.includes(s2)) svcs.push(s2); }
+      rows.push({
+        id: 'demo-' + (n++), created_at: ts.toISOString(),
+        name: `${f} ${l}`, email: `${asc(f)}.${asc(l)}@example.de`,
+        telefon: `0151 555${String(Math.floor(r()*9000)+1000)}`,
+        plz: pick(PLZ), leistungen: svcs, quelle: weighted(SRC),
+        nachricht: MSG[svcs[0]], status: status(back)
+      });
+    }
+  }
+  return rows.map(normalize).sort((a,b) => b.created - a.created);
+}
+
+/* ---------- Zeitfenster ---------- */
+function buckets(){
+  const n = state.range, today = startOfDay(new Date()), weekly = n > 30, out = [];
+  if (!weekly){
+    for (let i = n-1; i >= 0; i--){ const s = addDays(today,-i); out.push({start:s, end:addDays(s,1)}); }
+  } else {
+    const mon = startOfWeek(today), weeks = Math.round(n/7);
+    for (let i = weeks-1; i >= 0; i--){ const s = addDays(mon,-7*i); out.push({start:s, end:addDays(s,7)}); }
+  }
+  for (const b of out){
+    b.anfragen = 0; b.gewonnen = 0; b.weekly = weekly;
+    b.label = weekly
+      ? `KW ${isoWeek(b.start)}, ${dm(b.start)}–${dm(addDays(b.end,-1))}${b.end > new Date() ? ' (läuft)' : ''}`
+      : `${WD[b.start.getDay()]}, ${dm(b.start)}${b.start.getFullYear()}${+b.start === +today ? ' (heute)' : ''}`;
+    b.short = weekly ? `KW ${isoWeek(b.start)}` : dm(b.start);
+  }
+  for (const r of state.rows){
+    for (const b of out){
+      if (r.created >= b.start && r.created < b.end){
+        b.anfragen++;
+        if (r.status === 'gewonnen') b.gewonnen++;
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+/* ---------- Diagramm ---------- */
+function monotone(p){
+  const n = p.length; if (n < 2) return '';
+  const dx = [], m = [], t = [];
+  for (let i = 0; i < n-1; i++){ dx[i] = p[i+1][0]-p[i][0]; m[i] = (p[i+1][1]-p[i][1])/dx[i]; }
+  t[0] = m[0]; t[n-1] = m[n-2];
+  for (let i = 1; i < n-1; i++) t[i] = m[i-1]*m[i] <= 0 ? 0 : (m[i-1]+m[i])/2;
+  for (let i = 0; i < n-1; i++){
+    if (m[i] === 0){ t[i] = 0; t[i+1] = 0; continue; }
+    const a = t[i]/m[i], b = t[i+1]/m[i], s = a*a + b*b;
+    if (s > 9){ const k = 3/Math.sqrt(s); t[i] = k*a*m[i]; t[i+1] = k*b*m[i]; }
+  }
+  let d = `M${p[0][0].toFixed(1)},${p[0][1].toFixed(1)}`;
+  for (let i = 0; i < n-1; i++){
+    const h = dx[i]/3;
+    d += ` C${(p[i][0]+h).toFixed(1)},${(p[i][1]+t[i]*h).toFixed(1)} ${(p[i+1][0]-h).toFixed(1)},${(p[i+1][1]-t[i+1]*h).toFixed(1)} ${p[i+1][0].toFixed(1)},${p[i+1][1].toFixed(1)}`;
+  }
+  return d;
+}
+function niceScale(v){
+  for (const step of [1,2,5,10,20,50,100,200,500]) if (v/step <= 5) return {step, max: Math.ceil(v/step)*step};
+  return {step: 1000, max: Math.ceil(v/1000)*1000};
+}
+
+let firstDraw = true, lastW = 0;
+function renderChart(){
+  const host = $('#chart');
+  const W = Math.max(300, Math.floor(host.clientWidth)); lastW = W;
+  const H = W < 560 ? 250 : 310;
+  const m = {t:14, r:24, b:30, l:36};
+  const iw = W-m.l-m.r, ih = H-m.t-m.b;
+  const data = buckets(), n = data.length;
+  const maxV = Math.max(3, ...data.map(d => d.anfragen));
+  const {max, step} = niceScale(maxV);
+  const x = i => m.l + (n === 1 ? iw/2 : i*iw/(n-1));
+  const y = v => m.t + ih - v/max*ih;
+  const total = data.reduce((s,d) => s + d.anfragen, 0);
+
+  let grid = '';
+  for (let v = 0; v <= max; v += step){
+    grid += `<line class="grid" x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${m.l-8}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  }
+  const every = Math.ceil(n/(W < 560 ? 4 : 8));
+  let xl = '';
+  data.forEach((d,i) => { if ((n-1-i) % every === 0) xl += `<text class="axis" x="${x(i)}" y="${H-8}" text-anchor="${i===n-1?'end':'middle'}">${esc(d.short)}</text>`; });
+
+  const p1 = data.map((d,i) => [x(i), y(d.anfragen)]);
+  const p2 = data.map((d,i) => [x(i), y(d.gewonnen)]);
+  const l1 = monotone(p1), l2 = monotone(p2);
+  const area = `${l1} L${x(n-1).toFixed(1)},${y(0)} L${x(0).toFixed(1)},${y(0)} Z`;
+  const anim = firstDraw;
+
+  host.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`Anfragen pro ${data[0].weekly ? 'Woche' : 'Tag'}: ${total} im Zeitraum, Spitzenwert ${maxV}`)}">
+      <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" style="stop-color:var(--accent);stop-opacity:.38"/>
+        <stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/>
+      </linearGradient></defs>
+      ${grid}${xl}
+      <path class="area ${anim ? 'fade' : ''}" d="${area}" fill="url(#ag)"/>
+      <path class="line2" d="${l2}"/>
+      <path class="line1 ${anim ? 'draw' : ''}" pathLength="1" d="${l1}"/>
+      <line class="cross" id="cross" y1="${m.t}" y2="${m.t+ih}" style="display:none"/>
+      <circle class="dot" id="dot1" r="5" style="display:none;fill:var(--accent)"/>
+      <circle class="dot" id="dot2" r="4.5" style="display:none;fill:var(--won)"/>
+      <rect id="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>
+    </svg>
+    <div class="tip" id="tip" hidden></div>`;
+  firstDraw = false;
+
+  const svg = host.querySelector('svg'), tip = $('#tip'), cross = $('#cross'), d1 = $('#dot1'), d2 = $('#dot2');
+  const hide = () => { tip.hidden = true; cross.style.display = d1.style.display = d2.style.display = 'none'; };
+  const show = i => {
+    const d = data[i];
+    cross.setAttribute('x1', x(i)); cross.setAttribute('x2', x(i)); cross.style.display = '';
+    d1.setAttribute('cx', x(i)); d1.setAttribute('cy', y(d.anfragen)); d1.style.display = '';
+    d2.setAttribute('cx', x(i)); d2.setAttribute('cy', y(d.gewonnen)); d2.style.display = '';
+    tip.innerHTML = `<b>${esc(d.label)}</b>
+      <div class="r"><i style="background:var(--accent)"></i>Anfragen<strong>${d.anfragen}</strong></div>
+      <div class="r"><i style="background:var(--won)"></i>Daraus Aufträge<strong>${d.gewonnen}</strong></div>`;
+    tip.hidden = false;
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    let left = x(i) + 14; if (left + tw > W - 4) left = x(i) - tw - 14;
+    tip.style.left = Math.max(0, left) + 'px';
+    tip.style.top = Math.min(Math.max(0, y(d.anfragen) - 28), H - th - 30) + 'px';
+  };
+  $('#hit').addEventListener('pointermove', e => {
+    const r = svg.getBoundingClientRect();
+    const px = (e.clientX - r.left) * (W / r.width);
+    const i = Math.round((px - m.l) / iw * (n-1));
+    show(Math.min(n-1, Math.max(0, i)));
+  });
+  $('#hit').addEventListener('pointerleave', hide);
+}
+
+/* ---------- Kennzahlen, Balken, Liste ---------- */
+function renderKpis(){
+  const now = new Date(), d7 = addDays(now,-7), d14 = addDays(now,-14), d90 = addDays(now,-90);
+  const rows = state.rows;
+  const last7 = rows.filter(r => r.created >= d7).length;
+  const prev7 = rows.filter(r => r.created >= d14 && r.created < d7).length;
+  const neu = rows.filter(r => r.status === 'neu');
+  const overdue = neu.filter(r => now - r.created > 24*3600e3).length;
+  const angebote = rows.filter(r => r.status === 'angebot').length;
+  const won = rows.filter(r => r.created >= d90 && r.status === 'gewonnen').length;
+  const lost = rows.filter(r => r.created >= d90 && r.status === 'verloren').length;
+  const quote = won + lost ? Math.round(won/(won+lost)*100) + ' %' : '–';
+  const diff = last7 - prev7;
+  const delta = diff === 0 ? 'wie in den 7 Tagen davor'
+    : `<span class="${diff > 0 ? 'up' : 'down'}">${diff > 0 ? '+' : '−'}${Math.abs(diff)}</span> gegenüber den 7 Tagen davor`;
+  $('#kpis').innerHTML = `
+    <div class="kpi"><div class="big">${last7}</div><div class="lbl">Anfragen in 7 Tagen</div><div class="hint">${delta}</div></div>
+    <div class="kpi"><div class="big">${neu.length}</div><div class="lbl">Noch nicht bearbeitet</div><div class="hint">${overdue ? `<span class="bad">${overdue}</span> davon seit über 24 Std.` : 'keine seit über 24 Std.'}</div></div>
+    <div class="kpi"><div class="big">${angebote}</div><div class="lbl">Angebote warten auf Antwort</div><div class="hint">Status „Angebot raus“</div></div>
+    <div class="kpi"><div class="big">${quote}</div><div class="lbl">Abschlussquote</div><div class="hint">gewonnen von abgeschlossenen, 90 Tage</div></div>`;
+}
+
+function renderBars(){
+  const from = buckets()[0].start;
+  const inRange = state.rows.filter(r => r.created >= from);
+  const count = (get) => {
+    const map = new Map();
+    for (const r of inRange) for (const k of get(r)) map.set(k, (map.get(k)||0)+1);
+    return [...map.entries()].sort((a,b) => b[1]-a[1]);
+  };
+  const draw = (el, entries) => {
+    const max = entries[0] ? entries[0][1] : 1;
+    el.innerHTML = entries.length
+      ? entries.map(([k,v]) => `<div class="bar"><span class="bl" title="${esc(k)}">${esc(k)}</span><span class="bt"><span class="bf" style="width:${(v/max*100).toFixed(1)}%"></span></span><span class="bn">${v}</span></div>`).join('')
+      : '<p class="empty">Im gewählten Zeitraum gibt es keine Anfragen.</p>';
+  };
+  draw($('#bars-leistung'), count(r => r.leistungen.length ? r.leistungen : ['Keine Angabe']));
+  draw($('#bars-quelle'), count(r => [r.quelle || 'Keine Angabe']));
+}
+
+function renderList(){
+  const rows = state.rows;
+  const counts = {alle: rows.length};
+  STATUS.forEach(s => counts[s] = rows.filter(r => r.status === s).length);
+  $('#chips').innerHTML = ['alle', ...STATUS].map(s =>
+    `<button data-f="${s}" aria-pressed="${state.filter === s}">${s === 'alle' ? 'Alle' : STATUS_LABEL[s]} ${counts[s]}</button>`).join('');
+
+  const shown = rows.filter(r => state.filter === 'alle' || r.status === state.filter);
+  const slice = shown.slice(0, state.limit);
+  const now = Date.now();
+  $('#list').innerHTML = slice.length ? slice.map(r => {
+    const overdue = r.status === 'neu' && now - r.created > 24*3600e3;
+    const badge = overdue
+      ? `<span class="badge b-ueberfaellig">Neu, über 24 Std.</span>`
+      : `<span class="badge b-${r.status}">${STATUS_LABEL[r.status]}</span>`;
+    const mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.email) ? `<a href="mailto:${esc(r.email)}">${esc(r.email)}</a>` : esc(r.email || '–');
+    const tel = r.telefon ? `<a href="tel:${esc(r.telefon.replace(/[^\d+]/g,''))}">${esc(r.telefon)}</a>` : '–';
+    const id = esc(r.id);
+    return `<details class="item" data-id="${id}" ${state.open.has(String(r.id)) ? 'open' : ''}>
+      <summary>
+        <span><span class="nm">${esc(r.name)}</span><br><span class="svc">${esc(r.leistungen.join(', ') || 'Keine Angabe')}</span></span>
+        <span class="plz">${esc(r.plz)}</span>
+        <span class="when">${esc(ago(r.created))}</span>
+        ${badge}
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="detail">
+        <dl>
+          <dt>E-Mail</dt><dd>${mail}</dd>
+          <dt>Telefon</dt><dd>${tel}</dd>
+          <dt>PLZ</dt><dd>${esc(r.plz || '–')}</dd>
+          <dt>Gefunden über</dt><dd>${esc(r.quelle || '–')}</dd>
+          <dt>Eingegangen</dt><dd>${esc(`${dm(r.created)}${r.created.getFullYear()}, ${pad(r.created.getHours())}:${pad(r.created.getMinutes())} Uhr`)}</dd>
+          <dt>Nachricht</dt><dd class="msg">${esc(r.nachricht || '–')}</dd>
+        </dl>
+        <div class="status-row"><label for="st-${id}">Status</label>
+          <select id="st-${id}" data-id="${id}">${STATUS.map(s => `<option value="${s}" ${s === r.status ? 'selected' : ''}>${STATUS_LABEL[s]}</option>`).join('')}</select>
+        </div>
+      </div>
+    </details>`;
+  }).join('') : '<p class="empty">Noch keine Anfragen in dieser Ansicht. Sobald jemand das Formular ausfüllt, erscheint sie hier.</p>';
+  $('#more').hidden = shown.length <= state.limit;
+}
+
+function renderAll(){
+  $('#sub').textContent = `${state.rows.length} Anfragen insgesamt`;
+  renderKpis(); renderChart(); renderBars(); renderList();
+}
+
+/* ---------- Interaktion ---------- */
+let toastT;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 3200); }
+
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  state.range = +b.dataset.range;
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  renderChart(); renderBars();
+}));
+$('#chips').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  state.filter = b.dataset.f; state.limit = 15; renderList();
+});
+$('#more').addEventListener('click', () => { state.limit += 20; renderList(); });
+$('#list').addEventListener('toggle', e => {
+  const d = e.target; if (!d.matches || !d.matches('details.item')) return;
+  d.open ? state.open.add(d.dataset.id) : state.open.delete(d.dataset.id);
+}, true);
+$('#list').addEventListener('change', async e => {
+  const sel = e.target.closest('select'); if (!sel) return;
+  const row = state.rows.find(r => String(r.id) === sel.dataset.id); if (!row) return;
+  const old = row.status, next = sel.value;
+  row.status = next;
+  if (state.live){
+    const { error } = await state.client.from(CONFIG.TABLE).update({ status: next }).eq('id', row.id);
+    if (error){ row.status = old; toast('Status konnte nicht gespeichert werden.'); }
+    else toast(`Status: ${STATUS_LABEL[next]}`);
+  } else toast(`Status: ${STATUS_LABEL[next]} (Demo, wird nicht gespeichert)`);
+  renderAll();
+});
+
+let rafId;
+new ResizeObserver(() => {
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(() => { if (state.rows.length && Math.floor($('#chart').clientWidth) !== lastW) renderChart(); });
+}).observe($('#chart'));
+
+/* ---------- Start: Demo oder Supabase ---------- */
+function startDemo(){
+  state.rows = makeDemo();
+  $('#mode').textContent = 'Demodaten';
+  $('#demo-note').hidden = false;
+  renderAll();
+}
+
+function loadScript(src){
+  return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('Supabase-Skript konnte nicht geladen werden')); document.head.appendChild(s); });
+}
+
+async function startLive(){
+  state.live = true;
+  $('#login').hidden = true;
+  $('#logout').hidden = false;
+  $('#mode').textContent = 'Live';
+  $('#sub').textContent = 'Lade Anfragen …';
+  const { data, error } = await state.client.from(CONFIG.TABLE).select('*').order('created_at', { ascending: false }).limit(1000);
+  if (error){
+    const box = $('#load-error');
+    box.hidden = false;
+    box.textContent = `Die Anfragen konnten nicht geladen werden (${error.message}). Prüfe, ob die Tabelle „${CONFIG.TABLE}“ existiert und die Row-Level-Security-Regeln für deinen Login gesetzt sind.`;
+    state.rows = [];
+  } else {
+    state.rows = data.map(normalize);
+  }
+  renderAll();
+
+  state.client.channel('anfragen-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: CONFIG.TABLE }, p => {
+      if (p.eventType === 'INSERT'){
+        const r = normalize(p.new); state.rows.unshift(r); toast(`Neue Anfrage von ${r.name}`);
+      } else if (p.eventType === 'UPDATE'){
+        const r = normalize(p.new); const i = state.rows.findIndex(x => String(x.id) === String(r.id)); if (i >= 0) state.rows[i] = r;
+      } else if (p.eventType === 'DELETE'){
+        state.rows = state.rows.filter(x => String(x.id) !== String(p.old.id));
+      }
+      renderAll();
+    }).subscribe();
+}
+
+async function init(){
+  if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY){ startDemo(); return; }
+  try {
+    await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js');
+  } catch (e){ $('#load-error').hidden = false; $('#load-error').textContent = e.message; startDemo(); return; }
+  state.client = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  const { data: { session } } = await state.client.auth.getSession();
+  if (session) startLive(); else $('#login').hidden = false;
+}
+
+$('#login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('#l-err').textContent = '';
+  const { error } = await state.client.auth.signInWithPassword({ email: $('#l-mail').value.trim(), password: $('#l-pass').value });
+  if (error){ $('#l-err').textContent = 'E-Mail oder Passwort stimmt nicht.'; return; }
+  $('#l-pass').value = '';
+  startLive();
+});
+$('#logout').addEventListener('click', async () => { await state.client.auth.signOut(); location.reload(); });
+
+init();
+</script>
+</body>
+</html>
